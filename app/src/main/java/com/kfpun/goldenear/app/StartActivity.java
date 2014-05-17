@@ -1,6 +1,9 @@
 package com.kfpun.goldenear.app;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.support.v7.app.ActionBarActivity;
@@ -9,11 +12,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.RadioButton;
-import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -22,14 +23,14 @@ import butterknife.InjectView;
 public class StartActivity extends ActionBarActivity {
 
     private MediaPlayer mediaPlayerCorrect;
-    private MediaPlayer mediaPlayerNotCorrect;
+    private MediaPlayer mediaPlayerIncorrect;
+    private int state;
 
-    @InjectView(R.id.layoutCorrect)             LinearLayout layoutCorrect;
-    @InjectView(R.id.layoutIncorrect)           LinearLayout layoutIncorrect;
-    @InjectView(R.id.buttonCorrect)             Button buttonCorrect;
-    @InjectView(R.id.buttonIncorrect)           Button buttonIncorrect;
-    @InjectView(R.id.buttonSelectCorrect)       Button buttonSelectCorrect;
-    @InjectView(R.id.buttonSelectIncorrect)     Button buttonSelectIncorrect;
+    @InjectView(R.id.textView)              TextView testView;
+    @InjectView(R.id.buttonA)               Button buttonA;
+    @InjectView(R.id.buttonB)               Button buttonB;
+    @InjectView(R.id.buttonSelectA)         Button buttonSelectA;
+    @InjectView(R.id.buttonSelectB)         Button buttonSelectB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,109 +41,151 @@ public class StartActivity extends ActionBarActivity {
         ButterKnife.inject(this);
 
         Intent intent = getIntent();
-        final int state = intent.getIntExtra("EXTRA_STATE", 0);
-        final int incorrect = getIncorrects()[state];
+        state = intent.getIntExtra("EXTRA_STATE", 0);
+        final int media = getMedias()[state];
+
+        testView.setText(getResources().getResourceEntryName(media));
 
         mediaPlayerCorrect = MediaPlayer.create(this, R.raw.onclassical_wav);
         mediaPlayerCorrect.setVolume(getVolume(), getVolume());
         Log.d(Constants.FILE_TAG, "getTrackInfo mediaPlayerCorrect: " + mediaPlayerCorrect.getDuration());
 
-        mediaPlayerNotCorrect = MediaPlayer.create(this, incorrect);
-        mediaPlayerNotCorrect.setVolume(getVolume(), getVolume());
-        Log.d(Constants.FILE_TAG, "getTrackInfo mediaPlayerNotCorrect: " + mediaPlayerNotCorrect.getDuration());
+        mediaPlayerIncorrect = MediaPlayer.create(this, media);
+        mediaPlayerIncorrect.setVolume(getVolume(), getVolume());
+        Log.d(Constants.FILE_TAG, "getTrackInfo mediaPlayerIncorrect: " + mediaPlayerIncorrect.getDuration());
 
-        buttonCorrect.setOnClickListener(new View.OnClickListener() {
+        setButtons();
+    }
+
+    private void setButtons() {
+        if (Math.random() < 0.5) {
+            setButtonCorrect(buttonA);
+            setButtonIncorrect(buttonB);
+            setButtonSelectCorrect(buttonSelectA);
+            setButtonSelectIncorrect(buttonSelectB);
+        } else {
+            setButtonCorrect(buttonB);
+            setButtonIncorrect(buttonA);
+            setButtonSelectCorrect(buttonSelectB);
+            setButtonSelectIncorrect(buttonSelectA);
+        }
+    }
+
+    private void setButtonCorrect (final Button button) {
+        button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (mediaPlayerNotCorrect.isPlaying()) {
-                    Log.d(Constants.EVENT_TAG, "mediaPlayerNotCorrect was playing and now is stop");
-                    mediaPlayerNotCorrect.pause();
+                if (mediaPlayerCorrect.isPlaying()) {
+                    pauseMediaPlayers();
+                } else {
+                    pauseMediaPlayers();
+                    Drawable img = getResources().getDrawable( R.drawable.ic_pause );
+                    button.setCompoundDrawables(img, null, null, null);
+                    button.setText(getString(R.string.pause));
+                    Log.d(Constants.EVENT_TAG, "play mediaPlayerCorrect");
+                    mediaPlayerCorrect.start();
                 }
-                Log.d(Constants.EVENT_TAG, "play mediaPlayerCorrect");
-                mediaPlayerCorrect.start();
             }
         });
 
-        buttonCorrect.setOnLongClickListener(new View.OnLongClickListener() {
+        button.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                if (mediaPlayerNotCorrect.isPlaying()) {
-                    Log.d(Constants.EVENT_TAG, "mediaPlayerNotCorrect is playing and now is stop");
-                    mediaPlayerNotCorrect.pause();
-                }
+                pauseMediaPlayers();
                 Log.d(Constants.EVENT_TAG, "reset mediaPlayerCorrect");
                 mediaPlayerCorrect.seekTo(0);
                 return true;
             }
         });
+    }
 
-        buttonIncorrect.setOnClickListener(new View.OnClickListener() {
+    private void setButtonIncorrect (final Button button) {
+        button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (mediaPlayerCorrect.isPlaying()) {
-                    Log.d(Constants.EVENT_TAG, "mediaPlayerCorrect is playing and now is stop");
-                    mediaPlayerCorrect.pause();
+                if (mediaPlayerIncorrect.isPlaying()) {
+                    pauseMediaPlayers();
+                } else {
+                    pauseMediaPlayers();
+                    Drawable img = getResources().getDrawable( R.drawable.ic_pause );
+                    button.setCompoundDrawables(img, null, null, null);
+                    button.setText(getString(R.string.pause));
+                    Log.d(Constants.EVENT_TAG, "play mediaPlayerIncorrect");
+                    mediaPlayerIncorrect.start();
                 }
-                Log.d(Constants.EVENT_TAG, "play mediaPlayerNotCorrect");
-                mediaPlayerNotCorrect.start();
             }
         });
 
-        buttonIncorrect.setOnLongClickListener(new View.OnLongClickListener() {
+        button.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                if (mediaPlayerCorrect.isPlaying()) {
-                    Log.d(Constants.EVENT_TAG, "mediaPlayerCorrect is playing and now is stop");
-                    mediaPlayerCorrect.pause();
-                }
-                Log.d(Constants.EVENT_TAG, "reset mediaPlayerNotCorrect");
-                mediaPlayerNotCorrect.seekTo(0);
+                pauseMediaPlayers();
+                Log.d(Constants.EVENT_TAG, "reset mediaPlayerIncorrect");
+                mediaPlayerIncorrect.seekTo(0);
                 return true;
             }
         });
+    }
 
-        buttonSelectCorrect.setOnClickListener(new View.OnClickListener() {
+    private void setButtonSelectCorrect (Button button) {
+        button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mediaPlayerCorrect.pause();
-                mediaPlayerNotCorrect.pause();
                 Log.d(Constants.EVENT_TAG, "click buttonSelectCorrect");
+                pauseMediaPlayers();
+                Toast.makeText(getApplication(), getString(R.string.right_answer), Toast.LENGTH_SHORT).show();
 
                 int next_state = state + 1;
-                if (next_state >= getIncorrects().length) {
+                if (next_state >= getMedias().length) {
                     Log.d(Constants.EVENT_TAG, "Game done!");
                 } else {
                     Log.d(Constants.EVENT_TAG, "next_state: " + next_state);
+
                     Intent intent = new Intent(view.getContext(), StartActivity.class);
                     intent.putExtra("EXTRA_MESSAGE", "message");
                     intent.putExtra("EXTRA_STATE", next_state);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                    // mediaPlayerCorrect.release();
+                    // mediaPlayerIncorrect.release();
+                    finish();
                 }
             }
         });
+    }
 
-        buttonSelectIncorrect.setOnClickListener(new View.OnClickListener() {
+    private void setButtonSelectIncorrect (Button button) {
+        button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mediaPlayerCorrect.pause();
-                mediaPlayerNotCorrect.pause();
                 Log.d(Constants.EVENT_TAG, "click buttonSelectIncorrect");
+                pauseMediaPlayers();
+                Toast.makeText(getApplication(), getString(R.string.wrong_answer), Toast.LENGTH_SHORT).show();
             }
         });
-
-        shuffleButtons();
     }
 
-    private void shuffleButtons(){
-        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) buttonIncorrect.getLayoutParams();
-        params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-        params.addRule(RelativeLayout.LEFT_OF, R.id.buttonCorrect);
-
-        buttonIncorrect.setLayoutParams(params);
+    private Integer[] getMedias() {
+        return new Integer[] {R.raw.onclassical_low, R.raw.onclassical_high, R.raw.onclassical_low, R.raw.onclassical_high};
     }
 
-    private Integer[] getIncorrects() {
-        Integer[] games = {R.raw.onclassical_low, R.raw.onclassical_high, R.raw.onclassical_flac};
-        return games;
+    private void pauseMediaPlayers() {
+
+        Drawable img = getResources().getDrawable( R.drawable.ic_play );
+        buttonA.setCompoundDrawables(img, null, null, null);
+        buttonA.setText(getString(R.string.play));
+        buttonB.setCompoundDrawables(img, null, null, null);
+        buttonB.setText(getString(R.string.play));
+
+        if (mediaPlayerCorrect.isPlaying()) {
+            mediaPlayerCorrect.pause();
+            Log.d(Constants.EVENT_TAG, "Stop mediaPlayerCorrect");
+        }
+
+        if (mediaPlayerIncorrect.isPlaying()) {
+            mediaPlayerIncorrect.pause();
+            Log.d(Constants.EVENT_TAG, "Stop mediaPlayerIncorrect");
+        }
     }
 
     private float getVolume() {
@@ -152,6 +195,37 @@ public class StartActivity extends ActionBarActivity {
         float maxVolume = (float) audioManager
                 .getStreamMaxVolume(AudioManager.STREAM_MUSIC);
         return actualVolume / maxVolume;
+    }
+
+    @Override
+    public void onBackPressed() {
+        pauseMediaPlayers();
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Are you sure you want to exit?")
+                .setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        //mediaPlayerCorrect.release();
+                        //mediaPlayerIncorrect.release();
+                        StartActivity.this.finish();
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+
+    @Override
+    protected void onStop()
+    {
+        pauseMediaPlayers();
+        super.onStop();
+        Log.d(Constants.EVENT_TAG, "onStop");
     }
 
     @Override
@@ -166,10 +240,22 @@ public class StartActivity extends ActionBarActivity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                Log.d(Constants.EVENT_TAG, "Click home back.");
+                onBackPressed();
+                return true;
+            case R.id.action_shuffle:
+                pauseMediaPlayers();
+                mediaPlayerCorrect.seekTo(0);
+                mediaPlayerIncorrect.seekTo(0);
+                setButtons();
+                return true;
+            case R.id.action_settings:
+                Log.d(Constants.EVENT_TAG, "Click setting.");
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        return super.onOptionsItemSelected(item);
     }
 }

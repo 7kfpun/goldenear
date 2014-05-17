@@ -1,6 +1,7 @@
 package com.kfpun.goldenear.app;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.support.v7.app.ActionBarActivity;
@@ -20,7 +21,7 @@ public class MainActivity extends ActionBarActivity {
 
     private MediaPlayer mediaPlayerWav;
 
-    @InjectView(R.id.buttonWav)               Button buttonWav;
+    @InjectView(R.id.buttonWav)             Button buttonWav;
     @InjectView(R.id.buttonOk)              Button buttonOk;
 
     @Override
@@ -39,8 +40,15 @@ public class MainActivity extends ActionBarActivity {
         buttonWav.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d(Constants.EVENT_TAG, "play A");
-                mediaPlayerWav.start();
+                if (mediaPlayerWav.isPlaying()) {
+                    Log.d(Constants.EVENT_TAG, "pause A");
+                    buttonWav.setText(getString(R.string.play));
+                    mediaPlayerWav.pause();
+                } else {
+                    Log.d(Constants.EVENT_TAG, "play A");
+                    buttonWav.setText(getString(R.string.pause));
+                    mediaPlayerWav.start();
+                }
             }
         });
 
@@ -56,13 +64,24 @@ public class MainActivity extends ActionBarActivity {
         buttonOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d(Constants.EVENT_TAG, "play A");
+                Log.d(Constants.EVENT_TAG, "play Ok");
                 Intent intent = new Intent(view.getContext(), StartActivity.class);
                 intent.putExtra("EXTRA_MESSAGE", "message");
                 intent.putExtra("EXTRA_STATE", 0);
                 startActivity(intent);
             }
         });
+    }
+
+    @Override
+    protected void onStop()
+    {
+        if (mediaPlayerWav.isPlaying()) {
+            mediaPlayerWav.pause();
+            buttonWav.setText(getString(R.string.play));
+        }
+        super.onStop();
+        Log.d(Constants.EVENT_TAG, "onStop");
     }
 
     private float getVolume () {
@@ -86,10 +105,12 @@ public class MainActivity extends ActionBarActivity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                Log.d(Constants.EVENT_TAG, "Click setting.");
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        return super.onOptionsItemSelected(item);
     }
 }
