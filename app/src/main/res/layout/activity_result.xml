@@ -16,7 +16,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/textViewTitle"
         android:textStyle="bold"
-        android:layout_alignParentTop="true"
+        android:textSize="20sp"
+        android:gravity="center_vertical"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="86dp"
         android:layout_marginBottom="10dp" />
@@ -26,8 +27,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/textViewSubtitle"
+        android:gravity="center_vertical"
+        android:layout_centerHorizontal="true"
         android:layout_below="@+id/textViewTitle"
-        android:layout_centerHorizontal="true" />
+        android:layout_marginBottom="10dp" />
 
     <com.cengalabs.flatui.views.FlatButton
         android:layout_width="wrap_content"

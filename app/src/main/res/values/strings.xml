@@ -16,6 +16,16 @@
     <string name="start">Let\'s start</string>
     <string name="restart">Try again</string>
 
-    <string name="all_done">You have a golden ears!!</string>
+    <string name="title_hello_world">Test your ear now!</string>
+    <string name="subtitle_hello_world">Make sure you have been familiar with the test music. Start when you are ready.</string>
+
+    <string name="title_choose_better">Please choose the one with better sound quality</string>
+    <string name="subtitle_choose_better">One is WAV format, the another one is %s</string>
+
+    <string name="title_all_done">You have a golden ears!!</string>
+    <string name="subtitle_all_done">Unbelievable!</string>
+
+    <string name="title_fail">Unfortunately...</string>
+    <string name="subtitle_fail">You could not distinguish difference between %s kbit MP3 and WAV formats</string>
 
 </resources>

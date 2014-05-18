@@ -11,23 +11,26 @@
     tools:context="com.kfpun.goldenear.app.MainActivity">
 
     <TextView
-        android:text="@string/hello_world"
+        android:text="@string/title_hello_world"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/textViewTitle"
         android:textStyle="bold"
-        android:layout_alignParentTop="true"
+        android:textSize="20dp"
+        android:gravity="center_vertical"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="86dp"
+        android:layout_marginTop="40dp"
         android:layout_marginBottom="10dp" />
 
     <TextView
-        android:text="@string/hello_world"
+        android:text="@string/subtitle_hello_world"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/textViewSubtitle"
+        android:gravity="center_vertical"
         android:layout_below="@+id/textViewTitle"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp" />
 
     <com.cengalabs.flatui.views.FlatButton
         android:layout_width="wrap_content"
@@ -35,6 +38,7 @@
         android:text="@string/play_sound"
         android:id="@+id/buttonWav"
         flatui:blockButtonEffectHeight="3dp"
+        android:width="120dip"
         android:layout_gravity="center_horizontal"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />

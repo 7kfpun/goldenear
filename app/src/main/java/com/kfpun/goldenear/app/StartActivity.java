@@ -28,7 +28,8 @@ public class StartActivity extends ActionBarActivity {
     private MediaPlayer mediaPlayerIncorrect;
     private int state;
 
-    @InjectView(R.id.textView)              TextView testView;
+    @InjectView(R.id.textViewTitle)         TextView textViewTitle;
+    @InjectView(R.id.textViewSubtitle)      TextView textViewSubtitle;
     @InjectView(R.id.buttonA)               Button buttonA;
     @InjectView(R.id.buttonB)               Button buttonB;
     @InjectView(R.id.buttonSelectA)         Button buttonSelectA;
@@ -46,7 +47,8 @@ public class StartActivity extends ActionBarActivity {
         state = intent.getIntExtra("EXTRA_STATE", 0);
         final int media = Constants.getMedias()[state];
 
-        testView.setText(getResources().getResourceEntryName(media));
+        String subtitle = String.format(getString(R.string.subtitle_choose_better), getResources().getResourceEntryName(media));
+        textViewSubtitle.setText(subtitle);
 
         mediaPlayerCorrect = MediaPlayer.create(this, R.raw.onclassical_wav);
         mediaPlayerCorrect.setVolume(getVolume(), getVolume());
