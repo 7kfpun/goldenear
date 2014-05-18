@@ -42,7 +42,7 @@ public class MainActivity extends ActionBarActivity {
             public void onClick(View view) {
                 if (mediaPlayerWav.isPlaying()) {
                     Log.d(Constants.EVENT_TAG, "pause A");
-                    buttonWav.setText(getString(R.string.play));
+                    buttonWav.setText(getString(R.string.play_sound));
                     mediaPlayerWav.pause();
                 } else {
                     Log.d(Constants.EVENT_TAG, "play A");
@@ -78,7 +78,7 @@ public class MainActivity extends ActionBarActivity {
     {
         if (mediaPlayerWav.isPlaying()) {
             mediaPlayerWav.pause();
-            buttonWav.setText(getString(R.string.play));
+            buttonWav.setText(getString(R.string.play_sound));
         }
         super.onStop();
         Log.d(Constants.EVENT_TAG, "onStop");

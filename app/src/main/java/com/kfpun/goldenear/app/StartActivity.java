@@ -16,6 +16,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import javax.xml.transform.Result;
+
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
@@ -42,7 +44,7 @@ public class StartActivity extends ActionBarActivity {
 
         Intent intent = getIntent();
         state = intent.getIntExtra("EXTRA_STATE", 0);
-        final int media = getMedias()[state];
+        final int media = Constants.getMedias()[state];
 
         testView.setText(getResources().getResourceEntryName(media));
 
@@ -135,21 +137,23 @@ public class StartActivity extends ActionBarActivity {
                 pauseMediaPlayers();
                 Toast.makeText(getApplication(), getString(R.string.right_answer), Toast.LENGTH_SHORT).show();
 
+                Intent intent;
                 int next_state = state + 1;
-                if (next_state >= getMedias().length) {
+                if (next_state >= Constants.getMedias().length) {
                     Log.d(Constants.EVENT_TAG, "Game done!");
+                    intent = new Intent(view.getContext(), ResultActivity.class);
                 } else {
                     Log.d(Constants.EVENT_TAG, "next_state: " + next_state);
-
-                    Intent intent = new Intent(view.getContext(), StartActivity.class);
-                    intent.putExtra("EXTRA_MESSAGE", "message");
-                    intent.putExtra("EXTRA_STATE", next_state);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent);
-                    // mediaPlayerCorrect.release();
-                    // mediaPlayerIncorrect.release();
-                    finish();
+                    intent = new Intent(view.getContext(), StartActivity.class);
                 }
+
+                intent.putExtra("EXTRA_MESSAGE", "message");
+                intent.putExtra("EXTRA_STATE", next_state);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                // mediaPlayerCorrect.release();
+                // mediaPlayerIncorrect.release();
+                finish();
             }
         });
     }
@@ -161,21 +165,26 @@ public class StartActivity extends ActionBarActivity {
                 Log.d(Constants.EVENT_TAG, "click buttonSelectIncorrect");
                 pauseMediaPlayers();
                 Toast.makeText(getApplication(), getString(R.string.wrong_answer), Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(view.getContext(), ResultActivity.class);
+                intent.putExtra("EXTRA_MESSAGE", "message");
+                intent.putExtra("EXTRA_STATE", state);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                // mediaPlayerCorrect.release();
+                // mediaPlayerIncorrect.release();
+                finish();
+
             }
         });
-    }
-
-    private Integer[] getMedias() {
-        return new Integer[] {R.raw.onclassical_low, R.raw.onclassical_high, R.raw.onclassical_low, R.raw.onclassical_high};
     }
 
     private void pauseMediaPlayers() {
 
         Drawable img = getResources().getDrawable( R.drawable.ic_play );
         buttonA.setCompoundDrawables(img, null, null, null);
-        buttonA.setText(getString(R.string.play));
+        buttonA.setText(getString(R.string.play_sound));
         buttonB.setCompoundDrawables(img, null, null, null);
-        buttonB.setText(getString(R.string.play));
+        buttonB.setText(getString(R.string.play_sound));
 
         if (mediaPlayerCorrect.isPlaying()) {
             mediaPlayerCorrect.pause();

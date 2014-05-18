@@ -2,15 +2,20 @@
 <resources>
 
     <string name="app_name">Golden ear</string>
+    <string name="title_activity_start">StartActivity</string>
+    <string name="title_activity_result">ResultActivity</string>
+
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="action_shuffle">Shuffle</string>
-    <string name="title_activity_start">StartActivity</string>
 
     <string name="right_answer">Right answer!</string>
     <string name="wrong_answer">Wrong answer!</string>
-    <string name="play">Play</string>
+    <string name="play_sound">Play</string>
     <string name="pause">Pause</string>
     <string name="start">Let\'s start</string>
+    <string name="restart">Try again</string>
+
+    <string name="all_done">You have a golden ears!!</string>
 
 </resources>

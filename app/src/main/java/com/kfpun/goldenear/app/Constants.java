@@ -14,4 +14,13 @@ public class Constants {
     public static final String GPS_TAG = "GPS";
     public static final String IMAGE_TAG = "IMAGE";
     public static final String PROCESS_TAG = "PROCESS";
+
+    public static Integer[] getMedias() {
+        return new Integer[] {
+            R.raw.onclassical_low,
+            R.raw.onclassical_low,
+            R.raw.onclassical_high,
+            R.raw.onclassical_high,
+        };
+    }
 }
