@@ -1,7 +1,6 @@
 package com.kfpun.goldenear.app;
 
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.support.v7.app.ActionBarActivity;
@@ -11,24 +10,34 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.RadioButton;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
+import com.google.analytics.tracking.android.EasyTracker;
 
 
 public class MainActivity extends ActionBarActivity {
 
     private MediaPlayer mediaPlayerWav;
 
-    @InjectView(R.id.buttonWav)             Button buttonWav;
-    @InjectView(R.id.buttonOk)              Button buttonOk;
+    @InjectView(R.id.buttonWav)         Button buttonWav;
+    @InjectView(R.id.buttonOk)          Button buttonOk;
+    @InjectView(R.id.adView)            AdView adView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.inject(this);
+
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
 
         // Set the hardware buttons to control the music
         this.setVolumeControlStream(AudioManager.STREAM_MUSIC);
@@ -74,6 +83,12 @@ public class MainActivity extends ActionBarActivity {
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        EasyTracker.getInstance(this).activityStart(this);
+    }
+
+    @Override
     protected void onStop()
     {
         if (mediaPlayerWav.isPlaying()) {
@@ -82,6 +97,8 @@ public class MainActivity extends ActionBarActivity {
         }
         super.onStop();
         Log.d(Constants.EVENT_TAG, "onStop");
+
+        EasyTracker.getInstance(this).activityStop(this);
     }
 
     private float getVolume () {
@@ -106,8 +123,9 @@ public class MainActivity extends ActionBarActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         switch (item.getItemId()) {
-            case R.id.action_settings:
-                Log.d(Constants.EVENT_TAG, "Click setting.");
+            case R.id.action_credits:
+                Log.d(Constants.EVENT_TAG, "Click credits.");
+                Constants.getCredits(this);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

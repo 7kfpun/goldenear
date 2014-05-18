@@ -23,4 +23,6 @@ dependencies {
     compile 'com.android.support:appcompat-v7:19.1.0'
     compile 'com.github.eluleci:flatui:2.0.0'
     compile 'com.jakewharton:butterknife:5.0.1'
+    compile 'com.google.android.gms:play-services:4.3.+'
+    //compile 'com.google.apis:google-api-services-analytics:v3-rev91-1.18.0-rc'
 }

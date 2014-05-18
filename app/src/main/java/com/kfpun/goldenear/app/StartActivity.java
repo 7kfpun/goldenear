@@ -16,11 +16,12 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import javax.xml.transform.Result;
-
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
+import com.google.analytics.tracking.android.EasyTracker;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 
 public class StartActivity extends ActionBarActivity {
 
@@ -34,6 +35,8 @@ public class StartActivity extends ActionBarActivity {
     @InjectView(R.id.buttonB)               Button buttonB;
     @InjectView(R.id.buttonSelectA)         Button buttonSelectA;
     @InjectView(R.id.buttonSelectB)         Button buttonSelectB;
+    @InjectView(R.id.adView)
+    AdView adView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +45,9 @@ public class StartActivity extends ActionBarActivity {
         // Set the hardware buttons to control the music
         this.setVolumeControlStream(AudioManager.STREAM_MUSIC);
         ButterKnife.inject(this);
+
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
 
         Intent intent = getIntent();
         state = intent.getIntExtra("EXTRA_STATE", 0);
@@ -232,10 +238,17 @@ public class StartActivity extends ActionBarActivity {
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        EasyTracker.getInstance(this).activityStart(this);
+    }
+
+    @Override
     protected void onStop()
     {
         pauseMediaPlayers();
         super.onStop();
+        EasyTracker.getInstance(this).activityStop(this);
         Log.d(Constants.EVENT_TAG, "onStop");
     }
 
@@ -257,13 +270,15 @@ public class StartActivity extends ActionBarActivity {
                 onBackPressed();
                 return true;
             case R.id.action_shuffle:
+                Toast.makeText(getApplication(), getString(R.string.shuffle), Toast.LENGTH_SHORT).show();
                 pauseMediaPlayers();
                 mediaPlayerCorrect.seekTo(0);
                 mediaPlayerIncorrect.seekTo(0);
                 setButtons();
                 return true;
-            case R.id.action_settings:
-                Log.d(Constants.EVENT_TAG, "Click setting.");
+            case R.id.action_credits:
+                Log.d(Constants.EVENT_TAG, "Click credits.");
+                Constants.getCredits(this);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

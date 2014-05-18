@@ -8,6 +8,7 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="action_shuffle">Shuffle</string>
+    <string name="action_credits">Credits</string>
 
     <string name="right_answer">Right answer!</string>
     <string name="wrong_answer">Wrong answer!</string>
@@ -15,6 +16,7 @@
     <string name="pause">Pause</string>
     <string name="start">Let\'s start</string>
     <string name="restart">Try again</string>
+    <string name="shuffle">Shuffled</string>
 
     <string name="title_hello_world">Test your ear now!</string>
     <string name="subtitle_hello_world">Make sure you have been familiar with the test music. Start when you are ready.</string>

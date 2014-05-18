@@ -1,59 +1,77 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:flatui="http://schemas.android.com/apk/res-auto"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
     android:background="@color/white"
     tools:context="com.kfpun.goldenear.app.MainActivity">
 
-    <TextView
-        android:text="@string/title_hello_world"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/textViewTitle"
-        android:textStyle="bold"
-        android:textSize="20dp"
-        android:gravity="center_vertical"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp"
-        android:layout_marginBottom="10dp" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:layout_above="@+id/adView">
 
-    <TextView
-        android:text="@string/subtitle_hello_world"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/textViewSubtitle"
-        android:gravity="center_vertical"
-        android:layout_below="@+id/textViewTitle"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="10dp" />
+        <TextView
+            android:text="@string/title_hello_world"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textViewTitle"
+            android:textStyle="bold"
+            android:textSize="20dp"
+            android:gravity="center_vertical"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="40dp"
+            android:layout_marginBottom="10dp" />
 
-    <com.cengalabs.flatui.views.FlatButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/play_sound"
-        android:id="@+id/buttonWav"
-        flatui:blockButtonEffectHeight="3dp"
-        android:width="120dip"
-        android:layout_gravity="center_horizontal"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+        <TextView
+            android:text="@string/subtitle_hello_world"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textViewSubtitle"
+            android:gravity="center_vertical"
+            android:layout_below="@+id/textViewTitle"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="10dp" />
 
-    <com.cengalabs.flatui.views.FlatButton
+        <com.cengalabs.flatui.views.FlatButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/play_sound"
+            android:id="@+id/buttonWav"
+            flatui:blockButtonEffectHeight="3dp"
+            android:width="120dip"
+            android:layout_gravity="center_horizontal"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true" />
+
+        <com.cengalabs.flatui.views.FlatButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/start"
+            android:id="@+id/buttonOk"
+            flatui:theme="@array/grass"
+            flatui:blockButtonEffectHeight="3dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+    </RelativeLayout>
+
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/adView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/start"
-        android:id="@+id/buttonOk"
-        flatui:theme="@array/grass"
-        flatui:blockButtonEffectHeight="3dp"
-        android:layout_gravity="center_horizontal"
+        ads:adUnitId="ca-app-pub-8610011634603119/3323207786"
+        ads:adSize="BANNER"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
 
