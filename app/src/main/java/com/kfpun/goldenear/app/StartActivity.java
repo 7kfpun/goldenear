@@ -51,7 +51,7 @@ public class StartActivity extends ActionBarActivity {
 
         Intent intent = getIntent();
         state = intent.getIntExtra("EXTRA_STATE", 0);
-        final int media = Constants.getMedias()[state];
+        final int media = Utils.getMedias()[state];
 
         String subtitle = String.format(getString(R.string.subtitle_choose_better), getResources().getResourceEntryName(media));
         textViewSubtitle.setText(subtitle);
@@ -147,7 +147,7 @@ public class StartActivity extends ActionBarActivity {
 
                 Intent intent;
                 int next_state = state + 1;
-                if (next_state >= Constants.getMedias().length) {
+                if (next_state >= Utils.getMedias().length) {
                     Log.d(Constants.EVENT_TAG, "Game done!");
                     intent = new Intent(view.getContext(), ResultActivity.class);
                 } else {
@@ -278,7 +278,7 @@ public class StartActivity extends ActionBarActivity {
                 return true;
             case R.id.action_credits:
                 Log.d(Constants.EVENT_TAG, "Click credits.");
-                Constants.getCredits(this);
+                Utils.getCredits(this);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

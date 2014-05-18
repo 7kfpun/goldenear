@@ -38,7 +38,7 @@ public class ResultActivity extends Activity {
         Intent intent = getIntent();
         int last_state = intent.getIntExtra("EXTRA_STATE", 0);
 
-        if (last_state >= Constants.getMedias().length) {
+        if (last_state >= Utils.getMedias().length) {
             Log.d(Constants.EVENT_TAG, "Finish game");
             textViewTitle.setText(getString(R.string.title_all_done));
             textViewSubtitle.setText(getString(R.string.subtitle_all_done));
@@ -46,7 +46,7 @@ public class ResultActivity extends Activity {
             Log.d(Constants.EVENT_TAG, "Lost at game: " + last_state);
             textViewTitle.setText(getString(R.string.title_fail));
 
-            final int media = Constants.getMedias()[last_state];
+            final int media = Utils.getMedias()[last_state];
             String result = String.format(getString(R.string.subtitle_fail), getResources().getResourceEntryName(media));
             textViewSubtitle.setText(result);
         }
@@ -112,7 +112,7 @@ public class ResultActivity extends Activity {
         int id = item.getItemId();
         if (id == R.id.action_credits) {
             Log.d(Constants.EVENT_TAG, "Click credits.");
-            Constants.getCredits(this);
+            Utils.getCredits(this);
             return true;
         }
         return super.onOptionsItemSelected(item);

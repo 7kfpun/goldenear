@@ -125,7 +125,7 @@ public class MainActivity extends ActionBarActivity {
         switch (item.getItemId()) {
             case R.id.action_credits:
                 Log.d(Constants.EVENT_TAG, "Click credits.");
-                Constants.getCredits(this);
+                Utils.getCredits(this);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
